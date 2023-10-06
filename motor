@@ -5,6 +5,11 @@ Define M2D1 7; //Direction for Motor 2
 Define M2D2 8; //Direction for Motor 1
 Define M2S 9; //Speed for Motor 2
 
+/*
+Motors require one of the Direction pins to be High and one to be Low to define direction.
+The Speed pin must be a PWM signal that defines the speed. If the signal is too small (~30) the motor won't move
+*/
+
 void setup(){
 
 }
