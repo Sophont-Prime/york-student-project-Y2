@@ -1,8 +1,8 @@
-Define M1D1 4; //Direction for Motor 1
-Define M1D2 5; //Direction for Motor 2
+Define M1D1 4; //Direction1 for Motor 1
+Define M1D2 5; //Direction2 for Motor 1
 Define M1S 6; //Speed for Motor 1
-Define M2D1 7; //Direction for Motor 2
-Define M2D2 8; //Direction for Motor 1
+Define M2D1 7; //Direction1 for Motor 1
+Define M2D2 8; //Direction2 for Motor 1
 Define M2S 9; //Speed for Motor 2
 
 /*
