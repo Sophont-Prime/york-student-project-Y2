@@ -1,5 +1,6 @@
 #include <Arduino.h>
 
+/*
 Define M1D1 D4; //Direction1 for Motor 1
 Define M1D2 D5; //Direction2 for Motor 1
 Define M1S D6; //Speed for Motor 1
@@ -11,6 +12,7 @@ Define M2D2 D8; //Direction2 for Motor 2
 Define M2S D9; //Speed for Motor 2
 Define E2F A3;
 Deinfe E2B A4;
+*/
 
 /*
 Motors require one of the Direction pins to be High and one to be Low to define direction.
