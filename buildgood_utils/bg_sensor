@@ -1,7 +1,7 @@
 #include <Wire.h>
 #include "Adafruit_VL6180X.h"
 
-Adafruit_VL6180X front_sense = Adafruit_VL6180X();
+Adafruit_VL6180X vl = Adafruit_VL6180X();
 
 void setup() {
   // put your setup code here, to run once:
@@ -13,7 +13,7 @@ void setup() {
   }
   
   Serial.println("Adafruit VL6180x test!");
-  if (! front_sense.begin()) {
+  if (! vl.begin()) {
     Serial.println("Failed to find sensor");
     while (1);
   }
@@ -22,14 +22,11 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-//float lux = front_sense.readLux(VL6180X_ALS_GAIN_5);
+float lux = vl.readLux(VL6180X_ALS_GAIN_5);
 
-//Serial.print("Lux: "); Serial.println(lux);
+  uint8_t range = vl.readRange();
+  uint8_t status = vl.readRangeStatus();
 
-uint8_t range = front_sense.readRange();
-uint8_t status = front_sense.readRangeStatus();
-
-Serial.print("range:"); 
-Serial.println(range);
+Serial.print("range:"); serial.println(range);
 
 }
