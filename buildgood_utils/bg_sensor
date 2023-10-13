@@ -13,6 +13,6 @@ void loop() {
   uint8_t range = vl.readRange();
   uint8_t status = vl.readRangeStatus();
 
-Serial.print("range:"); serial.println(range);
+Serial.print("range:"); Serial.println(range);
 
 }
