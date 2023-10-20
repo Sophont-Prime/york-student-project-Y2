@@ -1,14 +1,14 @@
 #include <Arduino.h>
 
-#define M1D1 D4 //Direction1 for Motor 1
-#define M1D2 D5 //Direction2 for Motor 1
-#define M1S D6 //Speed for Motor 1
+#define M1D1 4 //Direction1 for Motor 1
+#define M1D2 5 //Direction2 for Motor 1
+#define M1S 6 //Speed for Motor 1
 #define E1F A1
 #define E1B A2
 
-#define M2D1 D7 //Direction1 for Motor 2
-#define M2D2 D8 //Direction2 for Motor 2
-#define M2S D9 //Speed for Motor 2
+#define M2D1 7 //Direction1 for Motor 2
+#define M2D2 8 //Direction2 for Motor 2
+#define M2S 9 //Speed for Motor 2
 #define E2F A3
 #define E2B A4
 
