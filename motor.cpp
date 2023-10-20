@@ -20,6 +20,7 @@ The Speed pin must be a PWM signal that defines the speed. If the signal is too 
 
 void forwards(){
   digitalWrite(M1D1, HIGH);
+  digitalWrite(M2D1, HIGH);
 }
 
 void stop(){
