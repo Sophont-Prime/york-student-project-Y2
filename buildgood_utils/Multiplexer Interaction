@@ -1,8 +1,14 @@
+#include <Arduino.h>
+#include "TCA9548A.h"
+#include "Adafruit_VL6180X.h"
 #include <Wire.h>
-#include <Adafruit_VL6180X.h>
 
-// Select I2C BUS
-void TCA9548A(uint8_t bus){
+TCA9548A I2CMux;                  // Address can be passed into the constructor
+
+Adafruit_VL6180X vl = Adafruit_VL6180X();
+
+void TCA9548A(uint8_t bus)
+{
   Wire.beginTransmission(0x70);  // TCA9548A address
   Wire.write(1 << bus);          // send byte to select bus
   Wire.endTransmission();
@@ -10,10 +16,57 @@ void TCA9548A(uint8_t bus){
 }
 
 void setup() {
-  // put your setup code here, to run once:
-  Serial.begin(115200);
+  Serial.begin(9600);
+
+while (!Serial) {
+    delay(1);
+  }
+
+  //  Wire.setPins(21, 22);       // ESP32 users, use setPins(sda, scl) if customised, *before* passing Wire to the library (the line below).  
+  I2CMux.begin(Wire);             // Wire instance is passed to the library
+
+  I2CMux.closeAll();              // Set a base state which we know (also the default state on power on)
+
+  I2CMux.openChannel(0);
+  Serial.println("Adafruit VL6180x test!");
+  if (! vl.begin()) {
+    Serial.println("Failed to find sensor");
+    while (1);
+  }
+  Serial.println("Sensor found!");
+  I2CMux.closeChannel(0);
+
+  I2CMux.openChannel(2);
+  Serial.println("Adafruit VL6180x test!");
+  if (! vl.begin()) {
+    Serial.println("Failed to find sensor");
+    while (1);
+  }
+  Serial.println("Sensor found!");
+  I2CMux.closeChannel(2);
+
+
+}
+
+void loop() 
+{
   Wire.begin();
 
-  TCA9548A(2); //Code below for sensor connected to bus 2
+  I2CMux.openChannel(0);
+  /* Code to interactive with revealed address on bus */
+   uint8_t range = vl.readRange();
+  uint8_t status = vl.readRangeStatus();
 
+  Serial.print("range1:"); Serial.println(range);
+  I2CMux.closeChannel(0);
+
+  I2CMux.openChannel(2);
+  /* Code to interactive with revealed address on bus */
+   uint8_t range2 = vl.readRange();
+  uint8_t status2 = vl.readRangeStatus();
+
+  Serial.print("range2:"); Serial.println(range2);
+  I2CMux.closeChannel(2);
+   /* Code  to interactive with revealed addresses on bus */
+  I2CMux.closeAll();
 }
