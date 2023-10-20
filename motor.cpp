@@ -57,6 +57,7 @@ void motorSetup(){
   setSpeed();
 }
 
+/*
 void setup(){
   Serial.begin(9600);
   pinMode(M1D1, OUTPUT);
@@ -75,7 +76,6 @@ void setup(){
 }
 
 void loop(){
-  /*
   forwards();
   encoderRead();
   digitalWrite(M1D1, LOW);
@@ -89,5 +89,5 @@ void loop(){
   Serial.print(analogRead(E1F));
   Serial.print("    ");
   Serial.println(analogRead(E1B));
-  */
 }
+*/
