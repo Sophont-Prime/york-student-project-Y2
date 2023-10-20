@@ -21,8 +21,9 @@ void forwards(){
   digitalWrite(M1D1, HIGH);
 }
 
-void backwards(){
-  digitalWrite(M1D2, HIGH);
+void stop(){
+  digitalWrite(M1D1, LOW);
+  digitalWrite(M2D1, LOW);
 }
 
 void setSpeed(){
@@ -58,7 +59,8 @@ void setup(){
 }
 
 void loop(){
-  /*forwards();
+  /*
+  forwards();
   encoderRead();
   digitalWrite(M1D1, LOW);
   Serial.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
@@ -66,9 +68,10 @@ void loop(){
   encoderRead();
   digitalWrite(M1D2, LOW);
   Serial.println("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
-  */
+  
   delay(5);
   Serial.print(analogRead(E1F));
   Serial.print("    ");
   Serial.println(analogRead(E1B));
+  */
 }
