@@ -41,6 +41,20 @@ void encoderRead(){
   }
 }
 
+void motorSetup(){
+  pinMode(M1D1, OUTPUT);
+  pinMode(M1D2, OUTPUT);
+  pinMode(M1S, OUTPUT);
+  pinMode(E1F, INPUT);
+  pinMode(E1B, INPUT);
+  
+  pinMode(M2D1, OUTPUT);
+  pinMode(M2D2, OUTPUT);
+  pinMode(M2S, OUTPUT);
+  
+  setSpeed();
+}
+
 void setup(){
   Serial.begin(9600);
   pinMode(M1D1, OUTPUT);
