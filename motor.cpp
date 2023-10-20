@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include "motor.h"
 
 #define M1D1 4 //Direction1 for Motor 1
 #define M1D2 5 //Direction2 for Motor 1
