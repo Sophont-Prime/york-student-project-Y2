@@ -1,0 +1,19 @@
+#include <Wire.h>
+#include <Adafruit_VL6180X.h>
+
+// Select I2C BUS
+void TCA9548A(uint8_t bus){
+  Wire.beginTransmission(0x70);  // TCA9548A address
+  Wire.write(1 << bus);          // send byte to select bus
+  Wire.endTransmission();
+  Serial.print(bus);
+}
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(115200);
+  Wire.begin();
+
+  TCA9548A(2); //Code below for sensor connected to bus 2
+
+}
