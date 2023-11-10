@@ -16,7 +16,8 @@ void Compute()
    double dErr = (error - lastErr);
   
    /*Compute PID Output*/
-   Output = kp * error + ki * errSum + kd * dErr;
+   Output = kp * error 
+   //+ ki * errSum + kd * dErr;
   
    /*Remember some variables for next time*/
    lastErr = error;
@@ -28,8 +29,8 @@ void SetTunings(double Kp, double Ki, double Kd)
 {
    double SampleTimeInSec = ((double)SampleTime)/1000;
    kp = Kp;
-   ki = Ki * SampleTimeInSec;
-   kd = Kd / SampleTimeInSec;
+   //ki = Ki * SampleTimeInSec;
+   //kd = Kd / SampleTimeInSec;
 }
 
 void SetSampleTime(int NewSampleTime)
@@ -38,8 +39,8 @@ void SetSampleTime(int NewSampleTime)
    {
       double ratio  = (double)NewSampleTime
                       / (double)SampleTime;
-      ki *= ratio;
-      kd /= ratio;
+     // ki *= ratio;
+      // kd /= ratio;
       SampleTime = (unsigned long)NewSampleTime;
    }
 }
