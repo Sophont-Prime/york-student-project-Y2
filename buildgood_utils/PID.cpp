@@ -1,19 +1,19 @@
+
+/*working variables*/
 unsigned long lastTime;
 double Input, Output, Setpoint;
 double errSum, lastErr;
 double kp, ki, kd;
-int Sampletime = 1000; //1 sec
 void Compute()
 {
    /*How long since we last calculated*/
    unsigned long now = millis();
-   int timeChange = (now - lastTime);
-   if (timeChange>=Sampletime)
-   {
+   double timeChange = (double)(now - lastTime);
+  
    /*Compute all the working error variables*/
    double error = Setpoint - Input;
-   errSum += error;
-   double dErr = (error - lastErr);
+   errSum += (error * timeChange);
+   double dErr = (error - lastErr) / timeChange;
   
    /*Compute PID Output*/
    Output = kp * error 
@@ -22,25 +22,11 @@ void Compute()
    /*Remember some variables for next time*/
    lastErr = error;
    lastTime = now;
-   }
 }
   
 void SetTunings(double Kp, double Ki, double Kd)
 {
-   double SampleTimeInSec = ((double)SampleTime)/1000;
    kp = Kp;
-   //ki = Ki * SampleTimeInSec;
-   //kd = Kd / SampleTimeInSec;
-}
-
-void SetSampleTime(int NewSampleTime)
-{
-   if (NewSampleTime > 0)
-   {
-      double ratio  = (double)NewSampleTime
-                      / (double)SampleTime;
-     // ki *= ratio;
-      // kd /= ratio;
-      SampleTime = (unsigned long)NewSampleTime;
-   }
+   ki = Ki;
+   kd = Kd;
 }
