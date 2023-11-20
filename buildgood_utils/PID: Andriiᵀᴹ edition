@@ -1,0 +1,38 @@
+int h_size = 10;
+int history[10];
+int target = 100;
+int input = 0;
+//Ridley was here
+float PID(int input){
+  float Kp = 1;
+  float Ki = 1;
+  float Kd = 1;
+
+  for(int i = 0; i<h_size-1; ++i){
+    history[i] = history[i+1];
+  } 
+  history[h_size] = input;
+  
+  int P = target - input;
+
+  int I = 0;
+  for(int i = 0; i<h_size; ++i){
+    I = I + history[i];
+  } 
+
+  int D = (history[h_size] - history[0])/h_size;
+
+  float output = Kp*P + Ki*I + Kd*D;
+  return output;
+}
+
+void setup() {
+  // put your setup code here, to run once:
+
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+
+}
+//ridkey
