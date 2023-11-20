@@ -19,20 +19,11 @@ float PID(int input){
   for(int i = 0; i<h_size; ++i){
     I = I + history[i];
   } 
+  // an alternative to summing the entire history would be to substract the input that was just deleted from history and add the currently input,
+  // however, I thought it would make the code more complicated and did this instead, despite this being technically slower.
 
   int D = (history[h_size] - history[0])/h_size;
 
   float output = Kp*P + Ki*I + Kd*D;
   return output;
 }
-
-void setup() {
-  // put your setup code here, to run once:
-
-}
-
-void loop() {
-  // put your main code here, to run repeatedly:
-
-}
-//ridkey
