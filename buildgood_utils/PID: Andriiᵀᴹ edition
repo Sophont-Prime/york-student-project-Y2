@@ -1,6 +1,6 @@
-int h_size = 10;
+int h_size = 10; // How many previous readings we want to remember
 int history[10];
-int target = 100;
+int target = 100; // Could be used as the second input for the function
 int input = 0;
 //Ridley was here
 float PID(int input){
