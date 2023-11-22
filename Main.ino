@@ -1,4 +1,6 @@
 #include "motor.h"
+#include "sensor.h"
+#include "pid.h"
 #include <Arduino.h>
 //Mot 1
 #define M1D1 4 //Direction1 for Motor 1
