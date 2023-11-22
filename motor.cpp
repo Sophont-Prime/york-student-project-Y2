@@ -16,7 +16,7 @@ void stop(){
   digitalWrite(M2D1, LOW);
 }
 
-  void setSpeed(){
+void setSpeed(){
     analogWrite(M1S, 160);
     analogWrite(M2S, 160);
   }
