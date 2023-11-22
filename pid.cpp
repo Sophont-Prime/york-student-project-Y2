@@ -1,8 +1,9 @@
+#include "pid.h"
 
 int PID_memory = 10;
 int PID_H[10];
 
-float PID(int input, int target){
+int PID(int input, int target){
   float Kp = 1;
   float Ki = 0.0;
   float Kd = 3;
