@@ -1,4 +1,4 @@
 //pid.h
 
 //PID
-PID();
+void PID(int input, int target);
