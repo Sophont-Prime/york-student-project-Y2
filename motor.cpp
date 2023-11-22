@@ -29,6 +29,19 @@ void stop(){
 }
 
 void setSpeed(int S1, int S2){
+  if (S1 >= 255){
+    S1 = 255;
+  }
+  if (S2 >= 255){
+    S2 = 255;
+  }
+  if (S1 <= 0){
+    S1 = 0;
+  }
+  if (S2 <= 0){
+    S2 = 0;
+  }
+  
   analogWrite(M1S, S1);
   analogWrite(M2S, S2);
 }
