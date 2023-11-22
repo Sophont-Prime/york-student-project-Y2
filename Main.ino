@@ -7,18 +7,7 @@ TCA9548A I2CMux;                  // Address can be passed into the constructor
 
 Adafruit_VL6180X vl = Adafruit_VL6180X();
 
-#define M1D1 4 //Direction1 for Motor 1
-#define M1D2 5 //Direction2 for Motor 1
-#define M1S 6 //Speed for Motor 1
-#define E1F A1
-#define E1B A2
-
-#define M2D1 7 //Direction1 for Motor 2
-#define M2D2 8 //Direction2 for Motor 2
-#define M2S 9 //Speed for Motor 2
-#define E2F A3
-#define E2B A4
-int Speed_init = 60;
+int Speed_init = 40;
 int left_motor = 0;
 int right_motor = 0;
 
@@ -29,12 +18,12 @@ int PID_H[10];
 float PID(int input, int target){
   float Kp = 0.5;
   float Ki = 0.0;
-  float Kd = 1;
+  float Kd = 0.5;
 
   for(int i = 0; i<PID_memory-1; ++i){
     PID_H[i] = PID_H[i+1];
   } 
-  PID_H[PID_memory] = input;
+  PID_H[PID_memory-1] = input;
   
   int P = target - input;
 
@@ -43,8 +32,11 @@ float PID(int input, int target){
     I = I + PID_H[i];
   } 
 
-  int D = (PID_H[PID_memory] - PID_H[0])/PID_memory;
-
+  int D = (PID_H[PID_memory-1] - PID_H[0]);
+  Serial.print("P:");
+  Serial.print(P);
+  Serial.print(" D:");
+  Serial.println(D);
   float output = Kp*P + Ki*I + Kd*D;
   return output;
 }
@@ -85,44 +77,33 @@ void loop()
 {
   // An LED and when blinking shows that the code is working
   digitalWrite(LED_BUILTIN, HIGH);
-  Wire.begin();
 
-  //int right = SensorRead(2);
-  //int left = SensorRead(3);
-  //int front = SensorRead(4);  
+  int right = SensorRead(2);
+  int left = SensorRead(3);
+  int front = SensorRead(4);
 
-  // Initial Sensor+Motor Testing: the robot tries to drive in a straight line but requires more tuning, might not even require PID but would require a lot of tuning
-  /*
-  else {
-    left_motor = 60;
-    right_motor = 60;
-    if (left<=40){
-      left_motor = 140-left*2;
-    }
-    if (right<=40){
-      right_motor = 140-right*2;
-    }
-  }*/
-  /*
+  
   int error = left - right;
   float adjustment = PID(error, 0);
-  left_motor = Speed_init + adjustment;
-  right_motor = Speed_init - adjustment;
+  if (adjustment < -30){
+    adjustment = -30;
+  }
+  if (adjustment > 30){
+    adjustment = 30;
+  }
+  left_motor = Speed_init + adjustment/2;
+  right_motor = Speed_init - adjustment/2;
   if (front <= 40){
     left_motor = 0;
     right_motor = 0;
   }
-  */
+  
 
 
-  left_motor = 60;
-  right_motor = 60;
   setSpeed(left_motor, right_motor);
-  turn_left();
-  delay(1000);
-  Serial.print("Left:");
+  Serial.print("Left motor:");
   Serial.print(left_motor);
-  Serial.print("   Right:");
+  Serial.print("   Right motor:");
   Serial.println(right_motor);
   
   
