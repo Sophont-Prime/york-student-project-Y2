@@ -1,5 +1,5 @@
 //#include <Arduino.h>
-//#include "motor.h"
+#include "motor.h"
 #include "TCA9548A.h"
 #include "Adafruit_VL6180X.h"
 #include <Wire.h>
@@ -28,8 +28,8 @@ int PID_H[10];
 //Ridley was here
 float PID(int input, int target){
   float Kp = 0.5;
-  float Ki = 0.3;
-  float Kd = 0.5;
+  float Ki = 0.0;
+  float Kd = 1;
 
   for(int i = 0; i<PID_memory-1; ++i){
     PID_H[i] = PID_H[i+1];
@@ -53,45 +53,7 @@ float PID(int input, int target){
 Motors require one of the Direction pins to be High and one to be Low to define direction.
 The Speed pin must be a PWM signal that defines the speed. If the signal is too small (~30) the motor won't move
 */
-void motorSetup(){
-  pinMode(M1D1, OUTPUT);
-  pinMode(M1D2, OUTPUT);
-  pinMode(M1S, OUTPUT);
-  pinMode(E1F, INPUT);
-  pinMode(E1B, INPUT);
-  
-  pinMode(M2D1, OUTPUT);
-  pinMode(M2D2, OUTPUT);
-  pinMode(M2S, OUTPUT);
-  
-  setSpeed();
-}
 
-void forwards(){
-  digitalWrite(M1D1, HIGH);
-  digitalWrite(M2D1, HIGH);
-}
-
-void stop(){
-  digitalWrite(M1D1, LOW);
-  digitalWrite(M2D1, LOW);
-}
-
-void setSpeed(){
-  analogWrite(M1S, left_motor);
-  analogWrite(M2S, right_motor);
-}
-
-void encoderRead(){
-  int i = 0;
-  while(i != 50) {
-    delay(5);
-    Serial.print(analogRead(E1F));
-    Serial.print("    ");
-    Serial.println(analogRead(E1B));
-    i += 1;
-  }
-}
 
 
 void TCA9548A(uint8_t bus)
@@ -112,7 +74,6 @@ int SensorRead(int channel){
 
 void setup(){
   motorSetup();
-  setSpeed();
   forwards();
   Serial.begin(9600); 
   Serial.println("program started");
@@ -126,9 +87,9 @@ void loop()
   digitalWrite(LED_BUILTIN, HIGH);
   Wire.begin();
 
-  int right = SensorRead(2);
-  int left = SensorRead(3);
-  int front = SensorRead(4);  
+  //int right = SensorRead(2);
+  //int left = SensorRead(3);
+  //int front = SensorRead(4);  
 
   // Initial Sensor+Motor Testing: the robot tries to drive in a straight line but requires more tuning, might not even require PID but would require a lot of tuning
   /*
@@ -142,7 +103,7 @@ void loop()
       right_motor = 140-right*2;
     }
   }*/
-
+  /*
   int error = left - right;
   float adjustment = PID(error, 0);
   left_motor = Speed_init + adjustment;
@@ -151,13 +112,20 @@ void loop()
     left_motor = 0;
     right_motor = 0;
   }
+  */
 
+
+  left_motor = 60;
+  right_motor = 60;
+  setSpeed(left_motor, right_motor);
+  turn_left();
+  delay(1000);
   Serial.print("Left:");
   Serial.print(left_motor);
   Serial.print("   Right:");
   Serial.println(right_motor);
   
-  setSpeed();
+  
   I2CMux.closeAll();
   digitalWrite(LED_BUILTIN, LOW);
   delay(50);// A delay for the blinking of the LED to be noticeable - entirely bug-fixing, could be removed later
