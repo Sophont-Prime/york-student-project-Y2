@@ -28,16 +28,22 @@ void setup(){
 }
 void loop(){
   digitalWrite(LED_BUILTIN, HIGH);
+  Serial.print("1");
   int right = sensorRead(2);
   int left = sensorRead(3);
   int front = sensorRead(4);
+  Serial.print("2");
   int error = left - right;
   float adjustment = PID(error, 0);
+  Serial.print("3");
   left_motor = Speed_init + adjustment;
   right_motor = Speed_init - adjustment;
+  Serial.print("4");
   if (front <= 40){
     left_motor = 0;
     right_motor = 0;
   }
+  Serial.println("5");
   digitalWrite(LED_BUILTIN, LOW);
+  delay(25);
 }
