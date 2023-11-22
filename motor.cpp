@@ -70,7 +70,6 @@ void turn_right(){
   delay(375);
   digitalWrite(M1D1, LOW);
   digitalWrite(M2D2, LOW);
-
 }
 
 void turn_left(){
@@ -83,5 +82,4 @@ void turn_left(){
   delay(375);
   digitalWrite(M1D1, LOW);
   digitalWrite(M2D2, LOW);
-
 }
