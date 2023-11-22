@@ -13,14 +13,29 @@
 #define E2F A3
 #define E2B A4
 
+int Speed_init = 60;
+int left_motor = 0;
+int right_motor = 0;
+
 void setup(){
   Serial.begin(9600);
   motorSetup();
   sensorSetup();
   Serial.println("Setup complete");
+  forwards();
 }
 void loop(){
-  forwards();
-  delay(500);
-  stop();
+  digitalWrite(LED_BUILTIN, HIGH);
+  int right = sensorRead(2);
+  int left = sensorRead(3);
+  int front = sensorRead(4);
+  int error = left - right;
+  float adjustment = PID(error, 0);
+  left_motor = Speed_init + adjustment;
+  right_motor = Speed_init - adjustment;
+  if (front <= 40){
+    left_motor = 0;
+    right_motor = 0;
+  }
+  digitalWrite(LED_BUILTIN, LOW);
 }
