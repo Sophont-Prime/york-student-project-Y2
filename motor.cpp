@@ -10,8 +10,8 @@
 #define M2D1 7 //Direction1 for Motor 2
 #define M2D2 8 //Direction2 for Motor 2
 #define M2S 9 //Speed for Motor 2
-#define E2F A3
-#define E2B A4
+#define E2F A6
+#define E2B A7
 
 /*
 Motors require one of the Direction pins to be High and one to be Low to define direction.

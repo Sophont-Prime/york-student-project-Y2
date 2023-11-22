@@ -27,15 +27,6 @@ while (!Serial) {
 
   I2CMux.closeAll();              // Set a base state which we know (also the default state on power on)
 
-  I2CMux.openChannel(0);
-  Serial.println("Adafruit VL6180x test!");
-  if (! vl.begin()) {
-    Serial.println("Failed to find sensor");
-    while (1);
-  }
-  Serial.println("Sensor found!");
-  I2CMux.closeChannel(0);
-
   I2CMux.openChannel(2);
   Serial.println("Adafruit VL6180x test!");
   if (! vl.begin()) {
@@ -44,6 +35,24 @@ while (!Serial) {
   }
   Serial.println("Sensor found!");
   I2CMux.closeChannel(2);
+
+I2CMux.openChannel(3);
+  Serial.println("Adafruit VL6180x test!");
+  if (! vl.begin()) {
+    Serial.println("Failed to find sensor");
+    while (1);
+  }
+  Serial.println("Sensor found!");
+  I2CMux.closeChannel(3);
+
+  I2CMux.openChannel(4);
+  Serial.println("Adafruit VL6180x test!");
+  if (! vl.begin()) {
+    Serial.println("Failed to find sensor");
+    while (1);
+  }
+  Serial.println("Sensor found!");
+  I2CMux.closeChannel(4);
 
 
 }
@@ -52,21 +61,30 @@ void loop()
 {
   Wire.begin();
 
-  I2CMux.openChannel(0);
-  /* Code to interactive with revealed address on bus */
-   uint8_t range = vl.readRange();
-  uint8_t status = vl.readRangeStatus();
-
-  Serial.print("range1:"); Serial.println(range);
-  I2CMux.closeChannel(0);
-
+  
   I2CMux.openChannel(2);
+  /* Code to interactive with revealed address on bus */
+   uint8_t range1 = vl.readRange();
+  uint8_t status1 = vl.readRangeStatus();
+
+  Serial.print("range1:"); Serial.println(range1);
+  I2CMux.closeChannel(2);
+
+  I2CMux.openChannel(3);
   /* Code to interactive with revealed address on bus */
    uint8_t range2 = vl.readRange();
   uint8_t status2 = vl.readRangeStatus();
 
   Serial.print("range2:"); Serial.println(range2);
-  I2CMux.closeChannel(2);
+  I2CMux.closeChannel(3);
+
+  I2CMux.openChannel(4);
+  /* Code to interactive with revealed address on bus */
+   uint8_t range3 = vl.readRange();
+  uint8_t status3 = vl.readRangeStatus();
+
+  Serial.print("range3:"); Serial.println(range3);
+  I2CMux.closeChannel(4);
    /* Code  to interactive with revealed addresses on bus */
   I2CMux.closeAll();
 }

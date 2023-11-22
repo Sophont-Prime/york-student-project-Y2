@@ -1,16 +1,16 @@
 //motor.h
 
-void forwards();
 //It's a function that sets the motors fowards
+void forwards();
 
-void stop();
 //Stops motor
+void stop();
 
-void setSpeed();
 //Sets motor speed
+void setSpeed();
 
-void encoderRead();
 //Reads the encoder, add more detail later
+void encoderRead();
 
-void motorSetup();
 //Motor setup code
+void motorSetup();
