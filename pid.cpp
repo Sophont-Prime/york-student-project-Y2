@@ -1,12 +1,12 @@
 #include "pid.h"
 
-int PID_memory = 10;
+int PID_memory = 50;
 int PID_H[10];
 
 int PID(int input, int target){
-  float Kp = 1;
-  float Ki = 0.0;
-  float Kd = 3;
+  float Kp = 0.1;
+  float Ki = -0;
+  float Kd = -0.60;
 
   for(int i = 0; i<PID_memory-1; ++i){
     PID_H[i] = PID_H[i+1];
