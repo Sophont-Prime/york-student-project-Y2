@@ -19,27 +19,32 @@ The Speed pin must be a PWM signal that defines the speed. If the signal is too 
 */
 
 void forwards(){
+  setSpeed(60, 60);
   digitalWrite(M1D1, HIGH);
   digitalWrite(M2D1, HIGH);
+  digitalWrite(M1D2, LOW);
+  digitalWrite(M2D2, LOW);
 }
 
 void stop(){
   digitalWrite(M1D1, LOW);
   digitalWrite(M2D1, LOW);
+  digitalWrite(M1D2, LOW);
+  digitalWrite(M2D2, LOW);
 }
 
 void setSpeed(int S1, int S2){
-  if (S1 >= 255){
-    S1 = 255;
-  }
-  if (S2 >= 255){
-    S2 = 255;
-  }
   if (S1 <= 0){
     S1 = 0;
   }
+  if (S1 >= 255){
+    S1 = 255;
+  }
   if (S2 <= 0){
     S2 = 0;
+  }
+  if (S2 >= 255){
+    S2 = 255;
   }
   
   analogWrite(M1S, S1);
@@ -74,25 +79,19 @@ void motorSetup(){
 }
 
 void turn_right(){
-  digitalWrite(M1D1, LOW);
-  digitalWrite(M2D1, LOW);
-  digitalWrite(M1D2, LOW);
-  digitalWrite(M2D2, LOW);
+  setSpeed(60, 60);
+  stop();
   digitalWrite(M1D1, HIGH);
   digitalWrite(M2D2, HIGH);
-  delay(375);
-  digitalWrite(M1D1, LOW);
-  digitalWrite(M2D2, LOW);
+  delay(500);
+  forwards();
 }
 
 void turn_left(){
-  digitalWrite(M1D1, LOW);
-  digitalWrite(M2D1, LOW);
-  digitalWrite(M1D2, LOW);
-  digitalWrite(M2D2, LOW);
+  setSpeed(60, 60);
+  stop();
   digitalWrite(M1D2, HIGH);
   digitalWrite(M2D1, HIGH);
-  delay(375);
-  digitalWrite(M1D1, LOW);
-  digitalWrite(M2D2, LOW);
+  delay(500);
+  forwards();
 }
