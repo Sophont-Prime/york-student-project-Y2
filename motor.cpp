@@ -28,9 +28,25 @@ void stop(){
   digitalWrite(M2D1, LOW);
 }
 
-void setSpeed(){
-  analogWrite(M1S, 255);
+void setSpeed(int S1, int S2){
+  if (S1 >= 255){
+    S1 = 255;
+  }
+  if (S2 >= 255){
+    S2 = 255;
+  }
+  if (S1 <= 0){
+    S1 = 0;
+  }
+  if (S2 <= 0){
+    S2 = 0;
+  }
+  
+  analogWrite(M1S, S1);
+  analogWrite(M2S, S2);
 }
+
+
 
 void encoderRead(){
   int i = 0;
@@ -54,5 +70,29 @@ void motorSetup(){
   pinMode(M2D2, OUTPUT);
   pinMode(M2S, OUTPUT);
   
-  setSpeed();
+  setSpeed(60, 60);
+}
+
+void turn_right(){
+  digitalWrite(M1D1, LOW);
+  digitalWrite(M2D1, LOW);
+  digitalWrite(M1D2, LOW);
+  digitalWrite(M2D2, LOW);
+  digitalWrite(M1D1, HIGH);
+  digitalWrite(M2D2, HIGH);
+  delay(375);
+  digitalWrite(M1D1, LOW);
+  digitalWrite(M2D2, LOW);
+}
+
+void turn_left(){
+  digitalWrite(M1D1, LOW);
+  digitalWrite(M2D1, LOW);
+  digitalWrite(M1D2, LOW);
+  digitalWrite(M2D2, LOW);
+  digitalWrite(M1D2, HIGH);
+  digitalWrite(M2D1, HIGH);
+  delay(375);
+  digitalWrite(M1D1, LOW);
+  digitalWrite(M2D2, LOW);
 }
