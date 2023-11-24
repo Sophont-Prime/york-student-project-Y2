@@ -91,7 +91,9 @@ void turn_right(){
   stop();
   digitalWrite(M1D1, HIGH);
   digitalWrite(M2D2, HIGH);
-  delay(650);
+  delay(700);
+  stop();
+  delay(100);
   forwards();
 }
 
@@ -100,7 +102,9 @@ void turn_left(){
   stop();
   digitalWrite(M1D2, HIGH);
   digitalWrite(M2D1, HIGH);
-  delay(650);
+  delay(700);
+  stop();
+  delay(100);
   forwards();
 }
 
