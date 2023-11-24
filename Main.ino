@@ -7,12 +7,10 @@ int Speed_init = 60;
 int left_motor = 0;
 int right_motor = 0;
 
-int PID_memory = 10;
-int PID_H[10];
+int PID_memory = 15;
+int PID_H[15];
 
 
-//Ridley was here
-//who is Ridley?
 
 void setup(){
   Serial.begin(9600);
@@ -20,44 +18,35 @@ void setup(){
   sensorSetup();
   Serial.println("Setup Complete");
   forwards();
-  //setup motors and start going forward
 }
 
-void loop() 
-{
-  forwards();
+void loop() {
   // An LED and when blinking shows that the code is working
   digitalWrite(LED_BUILTIN, HIGH);
 
   int right = sensorRead(2);
   int left = sensorRead(3);
   int front = sensorRead(4);
-  //read distance from left, right and front sensors
-  
-  int error = left - right; //how close we want the robot to be to the wall
 
+  
+  //int error = left - right;
+  int error = left-40;
+  //This consults the PID memory
   for(int i = 0; i<PID_memory-1; ++i){
     PID_H[i] = PID_H[i+1];
   } 
   PID_H[PID_memory-1] = error;
 
-  float adjustment = PID(error, 0, PID_memory, PID_H)*Speed_init/55; 
-  if (adjustment < -40){ //cap adjustments for extreme values
-    adjustment = -40;
-  }
-  if (adjustment > 40){
-    adjustment = 40;
-  }
+  float adjustment = PID(error, 40, PID_memory, PID_H)*Speed_init/55;
 
-  left_motor = Speed_init + adjustment; //change the speed of the motors based on readings
+
+  left_motor = Speed_init + adjustment;
   right_motor = Speed_init - adjustment;
-
-  if (front <= 50){
-    stop();
-    delay(250);
+  //If the front sensor detects a wall closer than or equal to 40mm in distrance away from the wall55555
+  if (front <= 40){
     turn_right(); // In following the left-hand wall algorithm the robot will only ever see a wall in front if it's a turn to the right 
-    }
-  else{
+  }
+  /*
   if (error >= 60){
     forwards();
     delay(225);
@@ -72,8 +61,22 @@ void loop()
     delay(750);
     stop();
   }
+  */
+  /*
+  if (PID_H[0] == PID_H[1] && PID_H[0] <= 60 || PID_H[1] <=60 ){ 
+    bool x = true;
+    for(int p = 0; p<PID_memory-1; ++p){
+      if (x = true && PID_H[p] != PID_H[p+1]){
+        x = false;
+        break;
+      }
+    }
+    if (x == true){
+      backwards();
+      delay(225);
+    }     
   }
-
+  */
   setSpeed(left_motor, right_motor);
   Serial.print("Left motor:");
   Serial.print(left_motor);
