@@ -19,9 +19,12 @@ void setup(){
   sensorSetup();
   Serial.println("Setup Complete");
   forwards();
+
 }
 
-void loop() {
+void loop() 
+{
+  forwards();
   // An LED and when blinking shows that the code is working
   digitalWrite(LED_BUILTIN, HIGH);
 
@@ -48,16 +51,27 @@ void loop() {
   left_motor = Speed_init + adjustment;
   right_motor = Speed_init - adjustment;
 
-  if (front <= 40){
+  if (front <= 50){
+    stop();
+    delay(250);
     turn_right(); // In following the left-hand wall algorithm the robot will only ever see a wall in front if it's a turn to the right 
-  }
-  if (left >= 60){
+    }
+  else{
+  if (error >= 60){
     forwards();
     delay(225);
     turn_left();
     delay(750);
+    stop();
   }
-
+  if (error <= -60){
+    forwards();
+    delay(225);
+    turn_right();
+    delay(750);
+    stop();
+  }
+  }
 
   setSpeed(left_motor, right_motor);
   Serial.print("Left motor:");
