@@ -41,8 +41,8 @@ void loop()
   } 
   PID_H[PID_memory-1] = error;
 
-  float adjustment = PID(error, 0, PID_memory, PID_H)*Speed_init/55; //cap adjustments to control extreme values
-  if (adjustment < -40){
+  float adjustment = PID(error, 0, PID_memory, PID_H)*Speed_init/55; 
+  if (adjustment < -40){ //cap adjustments for extreme values
     adjustment = -40;
   }
   if (adjustment > 40){
