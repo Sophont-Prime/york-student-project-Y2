@@ -12,6 +12,7 @@ int PID_H[10];
 
 
 //Ridley was here
+//who is Ridley?
 
 void setup(){
   Serial.begin(9600);
@@ -19,7 +20,7 @@ void setup(){
   sensorSetup();
   Serial.println("Setup Complete");
   forwards();
-
+  //setup motors and start going forward
 }
 
 void loop() 
@@ -31,16 +32,16 @@ void loop()
   int right = sensorRead(2);
   int left = sensorRead(3);
   int front = sensorRead(4);
-
+  //read distance from left, right and front sensors
   
-  int error = left - right;
+  int error = left - right; //how close we want the robot to be to the wall
 
   for(int i = 0; i<PID_memory-1; ++i){
     PID_H[i] = PID_H[i+1];
   } 
   PID_H[PID_memory-1] = error;
 
-  float adjustment = PID(error, 0, PID_memory, PID_H)*Speed_init/55;
+  float adjustment = PID(error, 0, PID_memory, PID_H)*Speed_init/55; //cap adjustments to control extreme values
   if (adjustment < -40){
     adjustment = -40;
   }
@@ -48,7 +49,7 @@ void loop()
     adjustment = 40;
   }
 
-  left_motor = Speed_init + adjustment;
+  left_motor = Speed_init + adjustment; //change the speed of the motors based on readings
   right_motor = Speed_init - adjustment;
 
   if (front <= 50){
