@@ -21,8 +21,7 @@ void setup(){
   forwards();
 }
 
-void loop() 
-{
+void loop() {
   // An LED and when blinking shows that the code is working
   digitalWrite(LED_BUILTIN, HIGH);
 
@@ -50,8 +49,8 @@ void loop()
   right_motor = Speed_init - adjustment;
 
   if (front <= 40){
-      turn_right(); // In following the left-hand wall algorithm the robot will only ever see a wall in front if it's a turn to the right 
-    }
+    turn_right(); // In following the left-hand wall algorithm the robot will only ever see a wall in front if it's a turn to the right 
+  }
   if (left >= 60){
     forwards();
     delay(225);
