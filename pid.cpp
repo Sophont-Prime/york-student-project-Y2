@@ -4,7 +4,7 @@
 float PID(int input, int target, int PID_memory, int PID_H[]){
   float Kp = 0.11;
   float Ki = -0.0;
-  float Kd = -0.35;
+  float Kd = -0.30;
   
   int P = target - input;
 
