@@ -48,7 +48,7 @@ void setSpeed(int S1, int S2){
   }
   
   analogWrite(M1S, S1);
-  analogWrite(M2S, S2);
+  analogWrite(M2S, S2*1.1);
 }
 
 
@@ -79,19 +79,19 @@ void motorSetup(){
 }
 
 void turn_right(){
-  setSpeed(60, 60);
+  setSpeed(50, 50);
   stop();
   digitalWrite(M1D1, HIGH);
   digitalWrite(M2D2, HIGH);
-  delay(500);
+  delay(650);
   forwards();
 }
 
 void turn_left(){
-  setSpeed(60, 60);
+  setSpeed(50, 50);
   stop();
   digitalWrite(M1D2, HIGH);
   digitalWrite(M2D1, HIGH);
-  delay(500);
+  delay(650);
   forwards();
 }
