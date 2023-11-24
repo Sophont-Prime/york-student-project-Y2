@@ -95,3 +95,12 @@ void turn_left(){
   delay(650);
   forwards();
 }
+
+void turn_around(){
+  setSpeed(50, 50);
+  stop();
+  digitalWrite(M1D2, HIGH);
+  digitalWrite(M2D1, HIGH);
+  delay(1300);
+  forwards();
+}
