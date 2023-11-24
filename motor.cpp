@@ -26,6 +26,14 @@ void forwards(){
   digitalWrite(M2D2, LOW);
 }
 
+void backwards(){
+  setSpeed(60, 60);
+  digitalWrite(M1D1, LOW);
+  digitalWrite(M2D1, LOW);
+  digitalWrite(M1D2, HIGH);
+  digitalWrite(M2D2, HIGH);
+}
+
 void stop(){
   digitalWrite(M1D1, LOW);
   digitalWrite(M2D1, LOW);
