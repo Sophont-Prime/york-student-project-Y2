@@ -1,12 +1,13 @@
 #include <Arduino.h>
 #include "motor.h"
 
+//mot 1
 #define M1D1 4 //Direction1 for Motor 1
 #define M1D2 5 //Direction2 for Motor 1
 #define M1S 6 //Speed for Motor 1
 #define E1F A1
 #define E1B A2
-
+//mot 2
 #define M2D1 7 //Direction1 for Motor 2
 #define M2D2 8 //Direction2 for Motor 2
 #define M2S 9 //Speed for Motor 2
@@ -19,19 +20,21 @@ The Speed pin must be a PWM signal that defines the speed. If the signal is too 
 */
 
 void forwards(){
-  setSpeed(60, 60);
   digitalWrite(M1D1, HIGH);
   digitalWrite(M2D1, HIGH);
   digitalWrite(M1D2, LOW);
   digitalWrite(M2D2, LOW);
 }
 
-void backwards(){
-  setSpeed(60, 60);
+void reverse(){
+  stop();
+  setSpeed(30, 30);
   digitalWrite(M1D1, LOW);
   digitalWrite(M2D1, LOW);
   digitalWrite(M1D2, HIGH);
   digitalWrite(M2D2, HIGH);
+  delay(400);
+  forwards();
 }
 
 void stop(){
@@ -91,28 +94,17 @@ void turn_right(){
   stop();
   digitalWrite(M1D1, HIGH);
   digitalWrite(M2D2, HIGH);
-  delay(700);
+  delay(500);
   stop();
-  delay(100);
-  forwards();
+  delay(150);
 }
 
 void turn_left(){
-  setSpeed(50, 50);
   stop();
   digitalWrite(M1D2, HIGH);
   digitalWrite(M2D1, HIGH);
-  delay(700);
+  delay(500);
   stop();
   delay(100);
-  forwards();
-}
-
-void turn_around(){
-  setSpeed(50, 50);
-  stop();
-  digitalWrite(M1D2, HIGH);
-  digitalWrite(M2D1, HIGH);
-  delay(1300);
   forwards();
 }
