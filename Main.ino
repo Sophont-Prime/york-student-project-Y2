@@ -109,6 +109,7 @@ void loop() {
     }
     turn_memory[arraycount] = 1;
     arraycount += 1;
+    
     if (left_count == 0){
       millis_zero = millis();
       left_count += 1;
@@ -118,6 +119,7 @@ void loop() {
     }
     if (left_count = 3){
       millis_true = millis() - millis_zero;
+      /*
       if (millis_true <= 5500){
         stop();
         mazesolved = true;
@@ -130,6 +132,8 @@ void loop() {
           delay(500);
         }
       }
+      */
+      left_count = 0;
     }
   }
 
@@ -137,9 +141,10 @@ void loop() {
   if (front <= 30){
     // In following the left-hand wall algorithm the robot will only ever see a wall in front of itself if it is required to turn to the right
     turn_right();
-    //turn_right();
+    forwards();
     turn_memory[arraycount] = 0;
     arraycount += 1;
+    left_count = 0;
     int front = sensorRead(4);
   }
     
@@ -149,7 +154,7 @@ void loop() {
   if (right <= 12){
     reverse();
   }
-  
+  forwards();
   PID_inmain(left);
 
   /*
