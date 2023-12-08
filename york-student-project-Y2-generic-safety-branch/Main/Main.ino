@@ -43,18 +43,36 @@ void PID_inmain(int left){
 
 void loop() {
   digitalWrite(LED_BUILTIN, HIGH);
+  
   //read sensors
   int right = sensorRead(2);
   int left = sensorRead(3);
   int front = sensorRead(4);
   
-  // An LED and when blinking shows that the code is working
   
+  // An LED and when blinking shows that the code is working
 
-  if (front <= 40){
+  
+  if (front <= 30 && left <=200){
     turn_right();
+    int front = sensorRead(4);
+   }
+  else if (left > 200){
+    setSpeed(50, 50);
+    forwards();
+    delay(400);
+    stop();
+    turn_left();
     }
-  else if (left <= 100){
+    
+  else if (left <= 12){
+    backupthebooty();
+  }
+  else if (right <= 12){
+    backupthebooty();
+  }
+  else if (13 <= left <= 200){
+    forwards();
     PID_inmain(left);
     }
   //If the front sensor detects a wall closer than or equal to 40mm in distrance away from the wall55555
