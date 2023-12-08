@@ -137,7 +137,7 @@ void loop() {
   if (front <= 30){
     // In following the left-hand wall algorithm the robot will only ever see a wall in front of itself if it is required to turn to the right
     turn_right();
-    turn_right();
+    //turn_right();
     turn_memory[arraycount] = 0;
     arraycount += 1;
     int front = sensorRead(4);
