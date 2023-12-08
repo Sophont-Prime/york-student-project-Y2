@@ -62,7 +62,7 @@ void solution(){
 void PID_inmain(int left){
 
   //forwards();
-  int error = left-30;
+  int error = left-25;
   //This consults the PID memory
 
   for(int i = 0; i<PID_memory-1; ++i){
@@ -96,10 +96,10 @@ void loop() {
   int front = sensorRead(4);
 
   if (left > 200){
-    setSpeed(50, 50);
     forwards();
     delay(400);
     stop();
+    setSpeed(40, 40);
     turn_left();
     int front = sensorRead(4);
     forwards();
