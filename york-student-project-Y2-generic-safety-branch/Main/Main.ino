@@ -3,28 +3,66 @@
 #include "pid.h"
 #include <Arduino.h>
 
-int Speed_init = 60;
+int Speed_init = 40;
 int left_motor = 0;
 int right_motor = 0;
 
 int PID_memory = 15;
 int PID_H[15];
 
+//This is the array and adjacent array necessary code
+int turn_memory[120];
+int arraycount = 0;
+
+//This bool tells us if the maze has been solved
+bool mazesolved = false;
+int millis_zero = 0;
+int millis_true = 0;
+//This is the counter for number of lefts
+int left_count = 0;
+
+void solution(){
+  int length = 120;
+  /*
+  0 - turn around
+  1 - left
+  2 - right
+  3 - not left
+  4 - not right
+  */
+  int simplificators[8][3] = {
+    {1, 0, 2}, 
+    {2, 0, 1}, 
+    {3, 0, 2}, 
+    {4, 0, 1},
+    {1, 0, 1},
+    {2, 0, 2},
+    {1, 0, 4},
+    {2, 0, 3}
+  };
+  int simplifications[8] = {0, 0,  1, 2, 3, 4, 2, 1};
 
 
-void setup(){
-  Serial.begin(9600);
-  motorSetup();
-  sensorSetup();
-  Serial.println("Setup Complete");
-  forwards();
+  bool no_changes = false;
+  while (no_changes = false){
+    no_changes = true;
+    for(int i = 0; i<length-2; i++){
+      for(int j = 0; j<8; j++){
+        if(turn_memory[i] == simplificators[j][0] && turn_memory[i+1] == simplificators[j][1] && turn_memory[i+2] == simplificators[j][2]){
+          turn_memory[i] = simplifications[j];
+          turn_memory[i+1] = -1;
+          turn_memory[i+2] = -1;
+          no_changes = false;
+        }
+      }
+    }
+  }
 }
-
 
 void PID_inmain(int left){
 
   //forwards();
-  int error = left-30;
+  int error = left-25;
   //This consults the PID memory
 
   for(int i = 0; i<PID_memory-1; ++i){
@@ -33,7 +71,12 @@ void PID_inmain(int left){
   PID_H[PID_memory-1] = error;
 
   float adjustment = PID(error, 30, PID_memory, PID_H)*Speed_init/55;
-
+  if (adjustment < -40){
+    adjustment = -40;
+  }
+  if (adjustment > 40){
+    adjustment = 40;
+  }
 
   left_motor = Speed_init + adjustment;
   right_motor = Speed_init - adjustment;
@@ -41,86 +84,101 @@ void PID_inmain(int left){
   setSpeed(left_motor, right_motor);
 }
 
+void setup(){
+  Serial.begin(9600);
+  setSpeed(Speed_init, Speed_init);
+  motorSetup();
+  sensorSetup();
+  Serial.println("Setup Complete");
+  forwards();
+}
+
 void loop() {
+  // An LED and when blinking shows that the code is working
   digitalWrite(LED_BUILTIN, HIGH);
-  
-  //read sensors
+
   int right = sensorRead(2);
   int left = sensorRead(3);
   int front = sensorRead(4);
-  
-  
-  // An LED and when blinking shows that the code is working
 
-  
-  if (front <= 30 && left <=200){
+   //If the front sensor detects a wall closer than or equal to 30mm in distrance away from the wall, the robot will then turn towards the gap
+  if (front <= 30 && left <120){
+    // In following the left-hand wall algorithm the robot will only ever see a wall in front of itself if it is required to turn to the right
     turn_right();
-    int front = sensorRead(4);
-   }
-  else if (left > 200){
-    setSpeed(50, 50);
     forwards();
-    delay(400);
+    turn_memory[arraycount] = 0;
+    arraycount += 1;
+    left_count = 0;
+    int front = sensorRead(4);
+  }
+
+  else if (left > 120){
+    forwards();
+    delay(1200);
     stop();
+    //setSpeed(40, 40);
     turn_left();
+    int left = sensorRead(3);
+    if (arraycount == 121){
+      Serial.println("Increase size of turn_memory array");
+      delay(5000000000000);
     }
+    turn_memory[arraycount] = 1;
+    arraycount += 1;
     
+    if (left_count == 0){
+      millis_zero = millis();
+      left_count += 1;
+    }
+    if (left_count >= 1){
+      left_count += 1;
+    }
+    if (left_count = 3){
+      millis_true = millis() - millis_zero;
+      /*
+      if (millis_true <= 5500){
+        stop();
+        mazesolved = true;
+        //dance
+        while (true){
+          Serial.println("Maze complete");
+          digitalWrite(LED_BUILTIN,HIGH);
+          delay(500);
+          digitalWrite(LED_BUILTIN,LOW);
+          delay(500);
+        }
+      }
+      */
+      left_count = 0;
+    }
+  }
+
   else if (left <= 12){
-    backupthebooty();
+    reverse();
   }
   else if (right <= 12){
-    backupthebooty();
+    reverse();
   }
-  else if (13 <= left <= 200){
-    forwards();
+    
+
+  else if (13 <= left <= 120){
     PID_inmain(left);
-    }
-  //If the front sensor detects a wall closer than or equal to 40mm in distrance away from the wall55555
-  //
-   // In following the left-hand wall algorithm the robot will only ever see a wall in front if it's a turn to the right 
-  
-  
-  
-  
+  }
+
   /*
-  if (error >= 75){
-    forwards();
-    delay(225);
-    turn_left();
-    delay(750);
-    stop();
-  }
-  if (error <= -75){
-    forwards();
-    delay(225);
-    turn_right();
-    delay(750);
-    stop();
-  }
-  */
-  /*
-  if (PID_H[0] == PID_H[1] && PID_H[0] <= 60 || PID_H[1] <=60 ){ 
-    bool x = true;
-    for(int p = 0; p<PID_memory-1; ++p){
-      if (x = true && PID_H[p] != PID_H[p+1]){
-        x = false;
-        break;
-      }
-    }
-    if (x == true){
-      backwards();
-      delay(225);
-    }     
-  }
-  
-  
+  //This code is for testing purposes and adjusting the PID
+  setSpeed(left_motor, right_motor);
   Serial.print("Left motor:");
   Serial.print(left_motor);
   Serial.print("   Right motor:");
   Serial.println(right_motor);
   */
-  
-
   digitalWrite(LED_BUILTIN, LOW);
   delay(50);// A delay for the blinking of the LED to be noticeable - entirely bug-fixing, could be removed later
+  if (mazesolved = true){
+    //Read algorithm log
+    //Simplify algorithm log
+    solution();
+    //Execute
+  }
 }
