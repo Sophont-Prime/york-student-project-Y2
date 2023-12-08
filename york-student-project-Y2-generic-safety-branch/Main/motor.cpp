@@ -91,32 +91,32 @@ void turn_right(){
   stop();
   digitalWrite(M1D1, HIGH);
   digitalWrite(M2D2, HIGH);
-  delay(502);
+  delay(500);
   stop();
-  delay(100);
-  forwards();
+  
+  delay(150);
+  //forwards();
 }
 
 void turn_left(){
   stop();
-  setSpeed(60, 60);
+  setSpeed(50, 50);
   digitalWrite(M1D2, HIGH);
-  digitalWrite(M2D1, HIGH);
-  delay(500);
+  digitalWrite(M2D1, HIGH); 
+  delay(502);
   stop();
   delay(100);
   forwards();
+  delay(500);
 }
 
-void turn_around(){
-  setSpeed(60, 60);
+void backupthebooty(){
+  setSpeed(30, 30);
   stop();
-  digitalWrite(M1D2, HIGH);
-  digitalWrite(M2D1, HIGH);
-  delay(600);
-  stop();
-  delay(100);
+  backwards();
+  delay(400);
   forwards();
+
 }
 
 
