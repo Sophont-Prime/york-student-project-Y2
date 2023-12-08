@@ -61,6 +61,7 @@ void solution(){
 
 void PID_inmain(int left){
 
+  //forwards();
   int error = left-30;
   //This consults the PID memory
 
@@ -93,10 +94,7 @@ void loop() {
   int right = sensorRead(2);
   int left = sensorRead(3);
   int front = sensorRead(4);
-  if (right >200){
-    turn_memory[arraycount] = 4;
-    arraycount += 1;
-  }
+
   if (left > 200){
     setSpeed(50, 50);
     forwards();
@@ -143,7 +141,6 @@ void loop() {
     turn_memory[arraycount] = 0;
     arraycount += 1;
     int front = sensorRead(4);
-    forwards();
   }
     
   if (left <= 12){
@@ -163,11 +160,12 @@ void loop() {
   Serial.print("   Right motor:");
   Serial.println(right_motor);
   */
-  
   digitalWrite(LED_BUILTIN, LOW);
   delay(50);// A delay for the blinking of the LED to be noticeable - entirely bug-fixing, could be removed later
-  if (mazesolved = true){
+  if (mazesolved = false){
     //Read algorithm log
-    //Execute 
+    //Simplify algorithm log
+    solution();
+    //Execute
   }
 }
