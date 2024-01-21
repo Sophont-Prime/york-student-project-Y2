@@ -1,27 +1,19 @@
+#include <Arduino.h>
 #include "pid.h"
 
-int PID_memory = 50;
-int PID_H[10];
-
-int PID(int input, int target){
-  float Kp = 0.1;
-  float Ki = -0;
-  float Kd = -0.60;
-
-  for(int i = 0; i<PID_memory-1; ++i){
-    PID_H[i] = PID_H[i+1];
-  } 
-  PID_H[PID_memory] = input;
+float PID(int input, int target, int PID_memory, int PID_H[]){
+  float Kp = 0.13;
+  float Ki = 0;
+  float Kd = -0.14;
   
   int P = target - input;
-
+  Serial.print(P);
   int I = 0;
   for(int i = 0; i<PID_memory; ++i){
     I = I + PID_H[i];
   } 
-
-  int D = (PID_H[PID_memory] - PID_H[0])/PID_memory;
-
+  int D = (PID_H[PID_memory-1] - PID_H[PID_memory-4]);
   float output = Kp*P + Ki*I + Kd*D;
+  
   return output;
 }
