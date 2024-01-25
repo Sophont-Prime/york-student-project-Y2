@@ -70,7 +70,7 @@ void PID_inmain(int left){
   } 
   PID_H[PID_memory-1] = error;
 
-  float adjustment = PID(error, 20, PID_memory, PID_H)*Speed_init/55;
+  float adjustment = PID(error, 0, PID_memory, PID_H)*Speed_init/55;
 
 
   left_motor = Speed_init + adjustment;
