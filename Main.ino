@@ -76,7 +76,7 @@ void solution_consult(){
   no_changes = false;
   while (no_changes = false){
     no_changes = true;
-    if (turn_memory[arraycount] = 5 || turn_memory[arraycount] = 0 || turn_memory[arraycount] = 3 || turn_memory[arraycount] = 4){
+    if (turn_memory[arraycount] == 5 || turn_memory[arraycount] == 0 || turn_memory[arraycount] == 3 || turn_memory[arraycount] == 4){
       //If next instruction is null or in an edge case, bypass
       arraycount +=1;
       no_changes = false;
@@ -199,13 +199,13 @@ void loop() {
   digitalWrite(LED_BUILTIN, LOW);
   delay(50);// A delay for the blinking of the LED to be noticeable - entirely bug-fixing, could be removed later
   //If the maze has been solved but a solution has not been derived then derive a solution
-  if (mazesolved = true && solved = false){
+  if (mazesolved == true){
     //Read algorithm log
     //Simplify algorithm log
     solution();
     //A solution has been found and can be utilised - so it is
     arraycount = 0;
-    while mazesolved = true{
+    while (mazesolved == true){
       forwards();
       PID_inmain(left);
       int right = sensorRead(2);
@@ -217,14 +217,14 @@ void loop() {
       if (right <= 12){
         reverse();
       }
-      if (left > 20 && turn_memory[arraycount] = 1){
+      if (left > 20 && turn_memory[arraycount] == 1){
         forwards();
         delay(400);
         stop();
         setSpeed(40, 40);
         turn_left();
       }
-      if (right > 20 && turn_memory[arraycount] = 2){
+      if (right > 20 && turn_memory[arraycount] == 2){
         turn_right();
       }
       solution_consult();
