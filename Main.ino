@@ -53,8 +53,8 @@ void solution(){
         while (no_solution == 0){
           for (int j = 0; j<5; j++){
               if (turn_memory[i-a] == simplificators[j][1] && turn_memory[i+b] == simplificators[j][2] || turn_memory[i-a] == simplificators[j][2] && turn_memory[i+b] == simplificators[j][1]){
-                turn_memory[i-a] = 5;
-                turn_memory[i+b] = 5;
+                turn_memory[i-a] = -1;
+                turn_memory[i+b] = -1;
                 turn_memory[i] = simplifications[j];
                 no_solution = 1;
               }
