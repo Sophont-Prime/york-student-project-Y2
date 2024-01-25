@@ -53,8 +53,8 @@ void solution(){
         while (no_solution == 0){
           for (int j = 0; j<5; j++){
               if (turn_memory[i-a] == simplificators[j][1] && turn_memory[i+b] == simplificators[j][2] || turn_memory[i-a] == simplificators[j][2] && turn_memory[i+b] == simplificators[j][1]){
-                turn_memory[i-a] = -1;
-                turn_memory[i+b] = -1;
+                turn_memory[i-a] = 5;
+                turn_memory[i+b] = 5;
                 turn_memory[i] = simplifications[j];
                 no_solution = 1;
               }
@@ -76,7 +76,7 @@ void solution_consult(){
   no_changes = false;
   while (no_changes = false){
     no_changes = true;
-    if (turn_memory[arraycount] = -1 || turn_memory[arraycount] = 0 || turn_memory[arraycount] = 3 || turn_memory[arraycount] = 4){
+    if (turn_memory[arraycount] = 5 || turn_memory[arraycount] = 0 || turn_memory[arraycount] = 3 || turn_memory[arraycount] = 4){
       //If next instruction is null or in an edge case, bypass
       arraycount +=1;
       no_changes = false;
