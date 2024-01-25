@@ -13,13 +13,14 @@ int PID_H[15];
 //This is the array and adjacent array necessary code
 int turn_memory[120];
 int arraycount = 0;
+bool no_changes = false;
 
 //This bool tells us if the maze has been solved
 bool mazesolved = false;
 int millis_zero = 0;
 int millis_true = 0;
-//This is the counter for number of lefts
-int left_count = 0;
+//This is the counter for number of turns, it is utilised in tracking whether the robot has reached the end of the maze or not
+int right_count = 0;
 
 void solution(){
   int length = 120;
@@ -43,7 +44,6 @@ void solution(){
   int simplifications[8] = {0, 0,  1, 2, 3, 4, 2, 1};
 
 
-  bool no_changes = false;
   while (no_changes = false){
     no_changes = true;
     for(int i = 0; i<length-2; i++){
@@ -55,6 +55,18 @@ void solution(){
           no_changes = false;
         }
       }
+    }
+  }
+}
+
+void solution_consult(){
+  no_changes = false;
+  while (no_changes = false){
+    no_changes = true;
+    if (turn_memory[arraycount] = -1 || turn_memory[arraycount] = 0 || turn_memory[arraycount] = 3 || turn_memory[arraycount] = 4){
+      //If next instruction is null or in an edge case, bypass
+      arraycount +=1;
+      no_changes = false;
     }
   }
 }
@@ -90,11 +102,11 @@ void setup(){
 void loop() {
   // An LED and when blinking shows that the code is working
   digitalWrite(LED_BUILTIN, HIGH);
-
+  
   int right = sensorRead(2);
   int left = sensorRead(3);
   int front = sensorRead(4);
-
+  
   if (left > 200){
     forwards();
     delay(400);
@@ -109,43 +121,49 @@ void loop() {
     }
     turn_memory[arraycount] = 1;
     arraycount += 1;
-    
-    if (left_count == 0){
-      millis_zero = millis();
-      left_count += 1;
-    }
-    if (left_count >= 1){
-      left_count += 1;
-    }
-    if (left_count = 3){
-      millis_true = millis() - millis_zero;
-      /*
-      if (millis_true <= 5500){
-        stop();
-        mazesolved = true;
-        //dance
-        while (true){
-          Serial.println("Maze complete");
-          digitalWrite(LED_BUILTIN,HIGH);
-          delay(500);
-          digitalWrite(LED_BUILTIN,LOW);
-          delay(500);
-        }
-      }
-      */
-      left_count = 0;
-    }
+    right_count = 0;
   }
-
+  
   //If the front sensor detects a wall closer than or equal to 30mm in distrance away from the wall, the robot will then turn towards the gap
   if (front <= 30){
     // In following the left-hand wall algorithm the robot will only ever see a wall in front of itself if it is required to turn to the right
     turn_right();
     forwards();
-    turn_memory[arraycount] = 0;
+    turn_memory[arraycount] = 2;
     arraycount += 1;
-    left_count = 0;
     int front = sensorRead(4);
+    if (front <= 30){
+      turn_right();
+      forwards();
+      arraycount -=1;
+      turn_memory[arraycount] = 0;
+      arraycount +=1;
+    }
+    if (right_count == 0){
+      millis_zero = millis();
+      right_count += 1;
+    }
+    if (right_count >= 1){
+      right_count += 1;
+    }
+    if (right_count = 3){
+      millis_true = millis() - millis_zero;
+      if (millis_true <= 5500){
+        stop();
+        mazesolved = true;
+        //dance
+        int h = 0;
+        while (h <= 30){
+          Serial.println("Maze complete");
+          digitalWrite(LED_BUILTIN,HIGH);
+          delay(500);
+          digitalWrite(LED_BUILTIN,LOW);
+          delay(500);
+          h += 1;
+        }
+      }
+      right_count = 0;
+    }
   }
     
   if (left <= 12){
@@ -167,10 +185,38 @@ void loop() {
   */
   digitalWrite(LED_BUILTIN, LOW);
   delay(50);// A delay for the blinking of the LED to be noticeable - entirely bug-fixing, could be removed later
-  if (mazesolved = false){
+  //If the maze has been solved but a solution has not been derived then derive a solution
+  if (mazesolved = true && solved = false){
     //Read algorithm log
     //Simplify algorithm log
     solution();
-    //Execute
+    //A solution has been found and can be utilised - so it is
+    arraycount = 0;
+    while mazesolved = true{
+      forwards();
+      PID_inmain(left);
+      int right = sensorRead(2);
+      int left = sensorRead(3);
+      int front = sensorRead(4);
+      if (left <= 12){
+        reverse();
+      }
+      if (right <= 12){
+        reverse();
+      }
+      if (left > 20 && turn_memory[arraycount] = 1){
+        forwards();
+        delay(400);
+        stop();
+        setSpeed(40, 40);
+        turn_left();
+      }
+      if (right > 20 && turn_memory[arraycount] = 2){
+        turn_right();
+      }
+      solution_consult();
+      arraycount +=1;
+
+    }
   }
 }
