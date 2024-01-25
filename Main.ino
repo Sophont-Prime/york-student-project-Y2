@@ -30,30 +30,43 @@ void solution(){
   2 - right
   3 - not left
   4 - not right
+  5 - skip
   */
-  int simplificators[8][3] = {
-    {1, 0, 2}, 
-    {2, 0, 1}, 
-    {3, 0, 2}, 
-    {4, 0, 1},
-    {1, 0, 1},
-    {2, 0, 2},
-    {1, 0, 4},
-    {2, 0, 3}
+  int simplificators[5][2] = {
+    {1, 2}, 
+    {3, 2}, 
+    {4, 1},
+    {1, 1},
+    {2, 2},
   };
-  int simplifications[8] = {0, 0,  1, 2, 3, 4, 2, 1};
+  int simplifications[5] = {0, 1, 2, 3, 4};
 
 
+  bool no_changes = false;
   while (no_changes = false){
     no_changes = true;
-    for(int i = 0; i<length-2; i++){
-      for(int j = 0; j<8; j++){
-        if(turn_memory[i] == simplificators[j][0] && turn_memory[i+1] == simplificators[j][1] && turn_memory[i+2] == simplificators[j][2]){
-          turn_memory[i] = simplifications[j];
-          turn_memory[i+1] = -1;
-          turn_memory[i+2] = -1;
-          no_changes = false;
-        }
+    for(int i = 0; i<length-1; i++){
+      if (turn_memory[i] == 0){
+        int a = 1;
+        int b = 1;
+        int no_solution = 0;
+        while (no_solution == 0){
+          for (int j = 0; j<5; j++){
+              if (turn_memory[i-a] == simplificators[j][1] && turn_memory[i+b] == simplificators[j][2] || turn_memory[i-a] == simplificators[j][2] && turn_memory[i+b] == simplificators[j][1]){
+                turn_memory[i-a] = 5;
+                turn_memory[i+b] = 5;
+                turn_memory[i] = simplifications[j];
+                no_solution = 1;
+              }
+          if (turn_memory[i-a] == 3 || 4){
+            a = a + 1;
+          }
+          if (turn_memory[i+b] == 3 || 4){
+            b = b + 1;
+          } 
+
+            }
+          }
       }
     }
   }
