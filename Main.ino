@@ -161,7 +161,7 @@ void loop() {
     }
     if (right_count = 3){
       millis_true = millis() - millis_zero;
-      if (millis_true <= 5500){
+      if (4000 <= millis_true <= 5500){
         stop();
         mazesolved = true;
         //dance
