@@ -3,7 +3,7 @@
 #include "pid.h"
 #include <Arduino.h>
 
-int Speed_init = 60;
+int Speed_init = 50;
 int left_motor = 0;
 int right_motor = 0;
 
@@ -21,6 +21,7 @@ int millis_zero = 0;
 int millis_true = 0;
 //This is the counter for number of turns, it is utilised in tracking whether the robot has reached the end of the maze or not
 int right_count = 0;
+bool pid_off=0;
 
 void solution(){
   int length = 120;
@@ -87,7 +88,7 @@ void solution_consult(){
 void PID_inmain(int left){
 
   //forwards();
-  int error = left-25;
+  int error = left-45;
   //This consults the PID memory
 
   for(int i = 0; i<PID_memory-1; ++i){
@@ -121,13 +122,26 @@ void loop() {
   int front = sensorRead(4);
   
   if (left > 200){
+    pid_off = 1;
+    setSpeed(Speed_init, Speed_init);
     forwards();
     delay(400);
     stop();
-    setSpeed(40, 40);
+    delay(500);
+    delay(100);
+    Serial.println("turn left");
     turn_left();
-    int front = sensorRead(4);
+
+    delay(100);
+    setSpeed(Speed_init, Speed_init);
     forwards();
+    delay(800);
+    stop();
+    Serial.println(front);
+    front = sensorRead(4);
+    Serial.println(front);
+    left = sensorRead(3);
+    delay(500);
     if (arraycount == 121){
       Serial.println("Increase size of turn_memory array");
       delay(5000000000000);
@@ -138,31 +152,47 @@ void loop() {
   }
   
   //If the front sensor detects a wall closer than or equal to 30mm in distrance away from the wall, the robot will then turn towards the gap
-  if (front <= 30){
+  if (left < 60 && front <= 35){
+    pid_off = 1;
     // In following the left-hand wall algorithm the robot will only ever see a wall in front of itself if it is required to turn to the right
+    setSpeed(Speed_init, Speed_init);
+    Serial.println("turn right");
     turn_right();
+    front = sensorRead(4);
+    right = sensorRead(2);
+    delay(100);
+    setSpeed(Speed_init, Speed_init);
     forwards();
+    delay(500);
+    stop();
+    delay(100);
     turn_memory[arraycount] = 2;
     arraycount += 1;
-    int front = sensorRead(4);
-    if (front <= 30){
+    front = sensorRead(4);
+    if (front <= 35){
       turn_right();
       forwards();
       arraycount -=1;
       turn_memory[arraycount] = 0;
       arraycount +=1;
     }
+    /*
     if (right_count == 0){
       millis_zero = millis();
       right_count += 1;
     }
     if (right_count >= 1){
       right_count += 1;
+      Serial.println("More than one");
     }
-    if (right_count = 3){
+    if (right_count == 3){
+      Serial.println(millis_zero);
       millis_true = millis() - millis_zero;
-      if (4000 <= millis_true <= 5500){
+      Serial.println(millis_true);
+      if (5000 < millis_true <= 5500){
         stop();
+        Serial.println(millis_true);
+        Serial.println("test");
         mazesolved = true;
         //dance
         int h = 0;
@@ -176,7 +206,7 @@ void loop() {
         }
       }
       right_count = 0;
-    }
+    }*/
   }
     
   if (left <= 12){
@@ -185,8 +215,11 @@ void loop() {
   if (right <= 12){
     reverse();
   }
+  digitalWrite(LED_BUILTIN, LOW);
+  delay(50);
   forwards();
-  PID_inmain(left);
+  if (pid_off == 1){pid_off = 0;}
+  else{PID_inmain(left);}
 
   /*
   //This code is for testing purposes and adjusting the PID
@@ -196,13 +229,14 @@ void loop() {
   Serial.print("   Right motor:");
   Serial.println(right_motor);
   */
-  digitalWrite(LED_BUILTIN, LOW);
-  delay(50);// A delay for the blinking of the LED to be noticeable - entirely bug-fixing, could be removed later
+  // A delay for the blinking of the LED to be noticeable - entirely bug-fixing, could be removed later
   //If the maze has been solved but a solution has not been derived then derive a solution
   if (mazesolved == true){
     //Read algorithm log
     //Simplify algorithm log
+    Serial.println("Triple affirmitive");
     solution();
+    Serial.println("TA");
     //A solution has been found and can be utilised - so it is
     arraycount = 0;
     while (mazesolved == true){
