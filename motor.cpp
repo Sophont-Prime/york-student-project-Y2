@@ -90,13 +90,12 @@ void motorSetup(){
 }
 
 void turn_right(){
-  setSpeed(50, 50);
   stop();
   digitalWrite(M1D1, HIGH);
   digitalWrite(M2D2, HIGH);
-  delay(500);
+  delay(400);
   stop();
-  delay(150);
+  delay(100);
 }
 
 void turn_left(){
@@ -106,5 +105,4 @@ void turn_left(){
   delay(500);
   stop();
   delay(100);
-  forwards();
 }
